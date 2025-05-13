@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "progresses",
+  "info": {
+    "singularName": "progress",
+    "pluralName": "progresses",
+    "displayName": "Progress",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "lecture": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::lecture.lecture",
+      "inversedBy": "progress"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "progresses"
+    },
+    "complation_date": {
+      "type": "datetime"
+    }
+  }
+}

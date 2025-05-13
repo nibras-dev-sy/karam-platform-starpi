@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "activation_codes",
+  "info": {
+    "singularName": "activation-code",
+    "pluralName": "activation-codes",
+    "displayName": "Activation Code",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "code": {
+      "type": "string",
+      "unique": true
+    },
+    "is_used": {
+      "type": "boolean"
+    },
+    "courses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::course.course"
+    },
+    "used_user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    }
+  }
+}
