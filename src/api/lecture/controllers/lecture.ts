@@ -11,7 +11,7 @@ export default factories.createCoreController('api::lecture.lecture', ({ strapi 
 
         const courseDocumentId = ctx.query.course;
 
-        if(!courseDocumentId) return ctx.forbidden("No Course Id");
+        if (!courseDocumentId) return ctx.forbidden("No Course Id");
 
         ctx.query = {
             ...ctx.query,

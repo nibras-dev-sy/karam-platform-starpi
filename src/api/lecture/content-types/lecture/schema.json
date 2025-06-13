@@ -39,6 +39,9 @@
       "relation": "oneToOne",
       "target": "api::progress.progress",
       "mappedBy": "lecture"
+    },
+    "videoUrl": {
+      "type": "string"
     }
   }
 }
