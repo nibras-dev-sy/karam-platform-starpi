@@ -9,7 +9,7 @@
     "displayName": "User"
   },
   "options": {
-    "timestamps": true
+    "draftAndPublish": false
   },
   "attributes": {
     "username": {
@@ -76,6 +76,14 @@
       "relation": "oneToMany",
       "target": "api::progress.progress",
       "mappedBy": "user"
+    },
+    "education": {
+      "type": "enumeration",
+      "enum": [
+        "ninth",
+        "twelfth_scientific",
+        "twelfth_literary"
+      ]
     }
   }
 }
