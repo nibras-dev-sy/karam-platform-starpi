@@ -1009,6 +1009,7 @@ export interface PluginUsersPermissionsUser
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    deviceId: Schema.Attribute.String;
     education: Schema.Attribute.Enumeration<
       ['ninth', 'twelfth_scientific', 'twelfth_literary']
     >;

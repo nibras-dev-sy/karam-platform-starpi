@@ -52,45 +52,45 @@ export async function callback(ctx: Context) {
 }
 
 export async function register(ctx: Context) {
+  const { mobile, username, password, education, deviceId } = ctx.request.body;
 
-    const { email, username, password, education } = ctx.request.body;
+  if (!mobile || !username || !password || !education || !deviceId) {
+    throw new ApplicationError('Missing required fields');
+  }
 
-    if (!email || !username || !password || !education) {
-        throw new ApplicationError('Missing required fields');
-    }
+  const allowedEducation = ['ninth', 'twelfth_scientific', 'twelfth_literary'];
+  if (!allowedEducation.includes(education)) {
+    throw new ApplicationError('Invalid education value');
+  }
 
-    const allowedEducation = ['ninth', 'twelfth_scientific', 'twelfth_literary'];
-    if (!allowedEducation.includes(education)) {
-        throw new ApplicationError('Invalid education value');
-    }
+  const userService = strapi.plugin('users-permissions').service('user');
 
-    const userService = strapi.plugin('users-permissions').service('user');
+  const existingMobile = await strapi.query('plugin::users-permissions.user').findOne({
+    where: { mobile },
+  });
 
-    const existingEmail = await strapi.query('plugin::users-permissions.user').findOne({
-        where: { email },
-    });
+  if (existingMobile) {
+    throw new ApplicationError('Mobile number is already in use');
+  }
 
-    if (existingEmail) {
-        throw new ApplicationError('Email is already in use');
-    }
+  const newUser = await userService.add({
+    mobile,
+    username,
+    password,
+    confirmed: true,
+    education,
+    deviceId,
+  });
 
-    const newUser = await userService.add({
-        email,
-        username,
-        password,
-        confirmed: true,
-        education,
-    });
+  const jwt = strapi.plugin('users-permissions').service('jwt').issue({ id: newUser.id });
 
-    const jwt = strapi.plugin('users-permissions').service('jwt').issue({ id: newUser.id });
-
-    ctx.send({
-        jwt,
-        user: {
-            id: newUser.id,
-            username: newUser.username,
-            email: newUser.email,
-            education: newUser.education,
-        },
-    });
+  ctx.send({
+    jwt,
+    user: {
+      id: newUser.id,
+      username: newUser.username,
+      mobile: newUser.mobile,
+      education: newUser.education,
+    },
+  });
 }
