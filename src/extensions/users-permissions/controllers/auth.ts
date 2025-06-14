@@ -9,47 +9,42 @@ const sanitizeUser = (user, ctx) => {
 };
 
 export async function callback(ctx: Context) {
+  const { identifier, password, deviceId } = ctx.request.body;
 
-    const { identifier, password } = ctx.request.body;
+  if (!identifier || !password || !deviceId) {
+    return ctx.badRequest('Mobile number, password, or device ID is missing');
+  }
 
-    if (!identifier || !password) {
-        return ctx.badRequest('Identifier or password missing');
+  const [user] = await strapi.entityService.findMany(
+    'plugin::users-permissions.user',
+    {
+      filters: { mobile: identifier },
     }
+  );
 
-    const [user] = await strapi.entityService.findMany(
-        'plugin::users-permissions.user',
-        {
-            filters: { email: identifier },
-            //populate: 'organization', // Here I have added another attribute
-        }
-    );
+  if (
+    !user ||
+    !(await strapi.plugins['users-permissions'].services.user.validatePassword(password, user.password))
+  ) {
+    return ctx.badRequest('Invalid credentials');
+  }
 
-    if (
-        !user ||
-        !(await strapi.plugins['users-permissions'].services.user.validatePassword(
-            password,
-            user.password
-        ))
-    ) {
-        return ctx.badRequest('Invalid credentials');
-    }
+  if (user.deviceId !== deviceId) {
+    return ctx.unauthorized('Access denied: Device mismatch');
+  }
 
-    const sanitizedUser: any = await sanitizeUser(
-        user,
-        ctx
-    );
+  const sanitizedUser: any = await sanitizeUser(user, ctx);
 
-    const jwt = strapi.plugins['users-permissions'].services.jwt.issue({
-        id: user.id,
-    });
+  const jwt = strapi.plugins['users-permissions'].services.jwt.issue({ id: user.id });
 
-    ctx.send({
-        jwt,
-        user: {
-            ...sanitizedUser,
-        },
-    });
+  ctx.send({
+    jwt,
+    user: {
+      ...sanitizedUser,
+    },
+  });
 }
+
 
 export async function register(ctx: Context) {
   const { mobile, username, password, education, deviceId } = ctx.request.body;
