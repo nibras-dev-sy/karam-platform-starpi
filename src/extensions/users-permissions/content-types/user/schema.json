@@ -84,6 +84,11 @@
         "twelfth_scientific",
         "twelfth_literary"
       ]
+    },
+    "mobile": {
+      "type": "string",
+      "required": false,
+      "unique": true
     }
   }
 }

@@ -1,5 +1,6 @@
-import type { Core } from '@strapi/strapi';
-import { callback } from './extensions/users-permissions/controllers/auth.js';
+import { Core } from '@strapi/strapi';
+import lifecycles from './extensions/users-permissions/content-types/user/lifecycles';
+import { callback, register } from './extensions/users-permissions/controllers/auth';
 
 export default {
   /**
@@ -10,6 +11,7 @@ export default {
    */
   register({ strapi }: { strapi: Core.Strapi }) {
     strapi.plugin('users-permissions').controller('auth').callback = callback;
+    strapi.plugin('users-permissions').controller('auth').register = register;
   },
 
   /**
@@ -19,5 +21,10 @@ export default {
    * This gives you an opportunity to set up your data model,
    * run jobs, or perform some special logic.
    */
-  bootstrap({ strapi }: { strapi: Core.Strapi }) {},
+  bootstrap({ strapi }: { strapi: Core.Strapi }) {
+    strapi.db.lifecycles.subscribe({
+      models: ['plugin::users-permissions.user'],
+      ...lifecycles,
+    });
+  },
 };
