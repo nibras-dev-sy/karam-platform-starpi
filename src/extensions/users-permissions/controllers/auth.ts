@@ -68,6 +68,9 @@ export async function register(ctx: Context) {
     throw new ApplicationError('Mobile number is already in use');
   }
 
+  //const roleService = strapi.plugins['users-permissions'].services.role;
+  //const authenticatedRole = await roleService.findOne({ type: 'authenticated' });
+
   const newUser = await userService.add({
     mobile,
     username,
@@ -75,6 +78,7 @@ export async function register(ctx: Context) {
     confirmed: true,
     education,
     deviceId,
+    role: 1, // assign role
   });
 
   const jwt = strapi.plugin('users-permissions').service('jwt').issue({ id: newUser.id });
