@@ -22,10 +22,7 @@
       "multiple": false,
       "required": false,
       "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
+        "videos"
       ]
     },
     "course": {
