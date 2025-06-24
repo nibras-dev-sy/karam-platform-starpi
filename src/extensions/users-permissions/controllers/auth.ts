@@ -2,10 +2,10 @@ import { ApplicationError } from '@strapi/utils/dist/errors';
 import { Context } from 'koa';
 
 const sanitizeUser = (user, ctx) => {
-    const { auth } = ctx.state;
-    const userSchema = strapi.getModel('plugin::users-permissions.user');
+  const { auth } = ctx.state;
+  const userSchema = strapi.getModel('plugin::users-permissions.user');
 
-    return strapi.contentAPI.sanitize.output(user, userSchema, { auth });
+  return strapi.contentAPI.sanitize.output(user, userSchema, { auth });
 };
 
 export async function callback(ctx: Context) {
@@ -27,6 +27,20 @@ export async function callback(ctx: Context) {
     !(await strapi.plugins['users-permissions'].services.user.validatePassword(password, user.password))
   ) {
     return ctx.badRequest('Invalid credentials');
+  }
+
+  if (user.deviceId == '' || user.deviceId == null) {
+    user.deviceId = deviceId;
+
+    await strapi.entityService.update(
+      'plugin::users-permissions.user',
+      user.id,
+      {
+        data: {
+          deviceId: deviceId
+        },
+      }
+    );
   }
 
   if (user.deviceId !== deviceId) {

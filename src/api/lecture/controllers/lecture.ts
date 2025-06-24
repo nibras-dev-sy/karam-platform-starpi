@@ -27,7 +27,7 @@ export default factories.createCoreController('api::lecture.lecture', ({ strapi 
                     }
                 },
             },
-            populate: ['progress', 'course'], // helps validation and returns relation
+            populate: ['progress', 'course', 'examFile'], // helps validation and returns relation
         };
 
         const { data, meta } = await super.find(ctx);
@@ -49,7 +49,7 @@ export default factories.createCoreController('api::lecture.lecture', ({ strapi 
                     }
                 },
             },
-            populate: ['progress', 'video', 'course'], // helps validation and returns relation
+            populate: ['progress', 'video', 'course', 'examFile'], // helps validation and returns relation
         };
 
         const { data, meta } = await super.findOne(ctx);

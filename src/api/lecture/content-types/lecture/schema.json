@@ -39,6 +39,19 @@
     },
     "videoUrl": {
       "type": "string"
+    },
+    "examLink": {
+      "type": "string"
+    },
+    "examFile": {
+      "allowedTypes": [
+        "images",
+        "videos",
+        "audios",
+        "files"
+      ],
+      "type": "media",
+      "multiple": false
     }
   }
 }
