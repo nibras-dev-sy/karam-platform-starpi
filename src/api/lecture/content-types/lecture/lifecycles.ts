@@ -44,7 +44,16 @@ async function afterCreateAndUpdate(event: any) {
   const hlsOutputPath = path.join(outputDir, m3u8FileName);
 
   await new Promise<void>((resolve, reject) => {
-    const ffmpegCmd = `ffmpeg -i "${inputFilePath}" -profile:v baseline -level 3.0 -start_number 0 -hls_time 10 -hls_list_size 0 -f hls "${hlsOutputPath}"`;
+    const ffmpegCmd = `ffmpeg -i "${inputFilePath}" \
+      -c:v libx264 -b:v 3500k \
+      -c:a aac -b:a 128k \
+      -profile:v baseline -level 3.0 \
+      -start_number 0 \
+      -hls_time 10 \
+      -hls_list_size 0 \
+      -f hls "${hlsOutputPath}"
+    `;
+    
     exec(ffmpegCmd, (error, stdout, stderr) => {
       if (error) {
         console.error('FFmpeg Error:', stderr);
