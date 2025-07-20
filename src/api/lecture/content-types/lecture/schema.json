@@ -44,14 +44,18 @@
       "type": "string"
     },
     "examFile": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "videos",
         "audios",
         "files"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
+    },
+    "unitName": {
+      "type": "string"
     }
   }
 }

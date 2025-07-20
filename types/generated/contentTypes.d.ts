@@ -474,6 +474,7 @@ export interface ApiLectureLecture extends Struct.CollectionTypeSchema {
     progress: Schema.Attribute.Relation<'oneToOne', 'api::progress.progress'>;
     publishedAt: Schema.Attribute.DateTime;
     title: Schema.Attribute.String;
+    unitName: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

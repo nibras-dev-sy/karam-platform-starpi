@@ -6,6 +6,7 @@ import { exec } from 'child_process';
 import { v4 as uuidv4 } from 'uuid';
 import AWS from 'aws-sdk';
 
+/*
 export default {
   async afterCreate(event: any) {
     return await afterCreateAndUpdate(event);
@@ -15,6 +16,7 @@ export default {
     return await afterCreateAndUpdate(event);
   },
 };
+*/
 
 async function afterCreateAndUpdate(event: any) {
   const { result } = event;
