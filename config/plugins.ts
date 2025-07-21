@@ -1,6 +1,9 @@
 export default ({ env }) => ({
   upload: {
     config: {
+      sizeLimit: 2 * 1024 * 1024 * 1024,
+      enabled: true,
+      multipart: true,
       provider: 'strapi-provider-upload-aws-s3',
       providerOptions: {
         accessKeyId: env('AWS_ACCESS_KEY_ID'),
