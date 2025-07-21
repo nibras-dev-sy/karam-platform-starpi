@@ -22,6 +22,8 @@ export default {
    * run jobs, or perform some special logic.
    */
   bootstrap({ strapi }: { strapi: Core.Strapi }) {
+    strapi.server.httpServer.requestTimeout = 20000 * 1000;
+
     strapi.db.lifecycles.subscribe({
       models: ['plugin::users-permissions.user'],
       ...lifecycles,
