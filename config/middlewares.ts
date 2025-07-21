@@ -5,6 +5,17 @@
       /* Replace 'strapi::security', with this snippet */
       /* Beginning of snippet */
       {
+        name: 'strapi::body',
+        config: {
+          formLimit: '2048mb', // or your desired limit
+          jsonLimit: '2048mb',
+          textLimit: '2048mb',
+          formidable: {
+            maxFileSize: 2048 * 1024 * 1024 // 2048mb
+          }
+        }
+      },
+      {
         name: 'strapi::security',
         config: {
           contentSecurityPolicy: {
