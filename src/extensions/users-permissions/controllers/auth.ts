@@ -29,7 +29,7 @@ export async function callback(ctx: Context) {
     return ctx.badRequest('Invalid credentials');
   }
 
-  if (user.deviceId == '' || user.deviceId == null) {
+  if (user.deviceId == '' || user.deviceId == null || user.isAdmin) {
     user.deviceId = deviceId;
 
     await strapi.entityService.update(

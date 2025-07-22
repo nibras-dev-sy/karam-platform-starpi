@@ -20,19 +20,28 @@ export default factories.createCoreController('api::lecture.lecture', ({ strapi 
 
         if (!courseDocumentId) return ctx.forbidden("No Course Id");
 
+        const courseFilter: any = {};
+
+        if (!user.isAdmin) {
+            courseFilter.users = {
+                id: {
+                    $eq: user.id,
+                },
+            }
+
+            courseFilter.documentId = {
+                $eq: courseDocumentId
+            }
+        } else {
+            courseFilter.documentId = {
+                $eq: courseDocumentId
+            }
+        }
+
         ctx.query = {
             ...ctx.query,
             filters: {
-                course: {
-                    users: {
-                        id: {
-                            $eq: user.id,
-                        },
-                    },
-                    documentId: {
-                        $eq: courseDocumentId
-                    }
-                },
+                course: courseFilter
             },
             populate: ['progress', 'course', 'examFile'], // helps validation and returns relation
         };
@@ -45,16 +54,20 @@ export default factories.createCoreController('api::lecture.lecture', ({ strapi 
         const user = ctx.state.user;
         if (!user) return ctx.unauthorized();
 
+        const courseFilter: any = {};
+
+        if (!user.isAdmin) {
+            courseFilter.users = {
+                id: {
+                    $eq: user.id,
+                },
+            }
+        }
+
         ctx.query = {
             ...ctx.query,
             filters: {
-                course: {
-                    users: {
-                        id: {
-                            $eq: user.id,
-                        },
-                    }
-                },
+                course: courseFilter
             },
             populate: ['progress', 'course', 'examFile'], // helps validation and returns relation
         };
@@ -67,7 +80,7 @@ export default factories.createCoreController('api::lecture.lecture', ({ strapi 
         const user = ctx.state.user;
         if (!user) return ctx.unauthorized();
         if (!user.isAdmin) return ctx.unauthorized();
-        
+
         const { filename, contentType } = ctx.request.query;
 
         const params = {
