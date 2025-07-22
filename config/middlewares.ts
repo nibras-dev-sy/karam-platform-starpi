@@ -2,7 +2,7 @@
     
     module.exports = [
       'strapi::errors',
-      'strapi::security',
+      //'strapi::security',
       'strapi::cors',
       'strapi::poweredBy',
       'strapi::logger',
@@ -11,7 +11,6 @@
       'strapi::session',
       'strapi::favicon',
       'strapi::public',
-      /*
       {
         name: 'strapi::security',
         config: {
@@ -38,5 +37,4 @@
           },
         },
       },
-      */
     ];

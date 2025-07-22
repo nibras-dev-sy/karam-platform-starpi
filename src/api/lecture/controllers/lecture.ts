@@ -3,6 +3,13 @@
  */
 
 import { factories } from '@strapi/strapi'
+import AWS from 'aws-sdk';
+
+const s3 = new AWS.S3({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.AWS_ACCESS_SECRET!,
+    region: process.env.AWS_REGION!,
+});
 
 export default factories.createCoreController('api::lecture.lecture', ({ strapi }) => ({
     async find(ctx) {
@@ -49,11 +56,33 @@ export default factories.createCoreController('api::lecture.lecture', ({ strapi 
                     }
                 },
             },
-            populate: ['progress', 'video', 'course', 'examFile'], // helps validation and returns relation
+            populate: ['progress', 'course', 'examFile'], // helps validation and returns relation
         };
 
         const { data, meta } = await super.findOne(ctx);
         return { data, meta };
-    }
+    },
+
+    async getSignedUrl(ctx) {
+        const user = ctx.state.user;
+        if (!user) return ctx.unauthorized();
+        if (!user.isAdmin) return ctx.unauthorized();
+        
+        const { filename, contentType } = ctx.request.query;
+
+        const params = {
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: filename,
+            Expires: 2 * 60 * 60, // seconds
+            ContentType: contentType,
+            ACL: 'public-read', // or 'private'
+        };
+
+        const uploadUrl = await s3.getSignedUrlPromise('putObject', params);
+
+        return {
+            uploadUrl
+        }
+    },
 }));
 

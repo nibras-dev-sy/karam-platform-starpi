@@ -92,6 +92,9 @@
     },
     "deviceId": {
       "type": "string"
+    },
+    "isAdmin": {
+      "type": "boolean"
     }
   }
 }

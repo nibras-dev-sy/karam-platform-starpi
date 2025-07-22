@@ -17,14 +17,6 @@
     "description": {
       "type": "text"
     },
-    "video": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": [
-        "videos"
-      ]
-    },
     "course": {
       "type": "relation",
       "relation": "manyToOne",
@@ -55,6 +47,9 @@
       ]
     },
     "unitName": {
+      "type": "string"
+    },
+    "uploadUrl": {
       "type": "string"
     }
   }
