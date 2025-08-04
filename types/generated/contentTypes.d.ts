@@ -479,7 +479,7 @@ export interface ApiLectureLecture extends Struct.CollectionTypeSchema {
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     uploadUrl: Schema.Attribute.String;
-    videoUrl: Schema.Attribute.String;
+    videoUrl: Schema.Attribute.Text;
   };
 }
 

@@ -30,7 +30,7 @@
       "mappedBy": "lecture"
     },
     "videoUrl": {
-      "type": "string"
+      "type": "text"
     },
     "examLink": {
       "type": "string"
