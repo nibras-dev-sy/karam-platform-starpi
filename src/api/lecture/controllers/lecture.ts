@@ -21,6 +21,7 @@ export default factories.createCoreController('api::lecture.lecture', ({ strapi 
         if (!courseDocumentId) return ctx.forbidden("No Course Id");
 
         const courseFilter: any = {};
+        var coursePopulate: any = {};
 
         if (!user.isAdmin) {
             courseFilter.users = {
@@ -32,10 +33,14 @@ export default factories.createCoreController('api::lecture.lecture', ({ strapi 
             courseFilter.documentId = {
                 $eq: courseDocumentId
             }
+
+            coursePopulate = ['progress', 'course', 'examFile'];
         } else {
             courseFilter.documentId = {
                 $eq: courseDocumentId
             }
+
+            coursePopulate = ['course', 'examFile'];
         }
 
         ctx.query = {
@@ -43,7 +48,7 @@ export default factories.createCoreController('api::lecture.lecture', ({ strapi 
             filters: {
                 course: courseFilter
             },
-            populate: ['progress', 'course', 'examFile'], // helps validation and returns relation
+            populate: coursePopulate, // helps validation and returns relation
         };
 
         const { data, meta } = await super.find(ctx);
