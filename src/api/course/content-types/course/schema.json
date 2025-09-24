@@ -34,17 +34,17 @@
       "target": "plugin::users-permissions.user",
       "inversedBy": "courses"
     },
-    "lectures": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::lecture.lecture",
-      "mappedBy": "course"
-    },
     "teacher": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::teacher.teacher",
       "inversedBy": "courses"
+    },
+    "lectures": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::lecture.lecture",
+      "mappedBy": "courses"
     }
   }
 }

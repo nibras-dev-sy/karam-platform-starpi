@@ -34,19 +34,19 @@ export default factories.createCoreController('api::lecture.lecture', ({ strapi 
                 $eq: courseDocumentId
             }
 
-            coursePopulate = ['progress', 'course', 'examFile'];
+            coursePopulate = ['progress', 'courses', 'examFile'];
         } else {
             courseFilter.documentId = {
                 $eq: courseDocumentId
             }
 
-            coursePopulate = ['course', 'examFile'];
+            coursePopulate = ['courses', 'examFile'];
         }
 
         ctx.query = {
             ...ctx.query,
             filters: {
-                course: courseFilter
+                courses: courseFilter
             },
             populate: coursePopulate, // helps validation and returns relation
         };
@@ -72,9 +72,9 @@ export default factories.createCoreController('api::lecture.lecture', ({ strapi 
         ctx.query = {
             ...ctx.query,
             filters: {
-                course: courseFilter
+                courses: courseFilter
             },
-            populate: ['progress', 'course', 'examFile'], // helps validation and returns relation
+            populate: ['progress', 'courses', 'examFile'], // helps validation and returns relation
         };
 
         const { data, meta } = await super.findOne(ctx);
